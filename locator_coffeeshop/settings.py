@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-
+import os.path
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -40,8 +40,8 @@ INSTALLED_APPS = [
     'user',
     'coffeeshop',
     'drink',
-    'settings_coffee_shop',
-    'favorites',
+    'settings_coffeeshop',
+    'favorite',
     'file',
     'review',
 ]
@@ -59,6 +59,14 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'locator_coffeeshop.urls'
 
 TEMPLATES = [
+    {
+       'BACKEND': 'django.template.backends.jinja2.Jinja2',
+       'DIRS': [],
+       'APP_DIRS': True,
+       'OPTIONS': {
+         'environment': 'locator_coffeeshop.jinja2.environment'
+       },
+    },
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [BASE_DIR / 'templates']
@@ -127,8 +135,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
 DATA_FOLDER = '../data/'
+STATIC_URL = 'static/'
+STATICFILES_DIRS = ['static/']
+
 
 
 # Default primary key field type
