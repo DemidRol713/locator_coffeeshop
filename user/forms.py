@@ -3,30 +3,24 @@ from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from .models import Profile
 
 
-class ProfileCreationForm(UserCreationForm):
-    class Meta(UserCreationForm):
-        model = Profile
-        fields = ('username', 'first_name', 'last_name', 'email')
-
-
 class ProfileChangeForm(UserChangeForm):
 
     class Meta:
         model = Profile
-        fields = ('username', 'email')
+        fields = ('username', 'first_name', 'last_name', 'email', 'date_of_birth',)
 
 
-class UserRegistrationForm(forms.ModelForm):
+class UserRegistrationForm(UserCreationForm):
 
-    password = forms.CharField(label='Password', max_length=20, widget=forms.PasswordInput)
-    password_2 = forms.CharField(label='Repeat password', max_length=20, widget=forms.PasswordInput)
+    password1 = forms.CharField(label='Password', max_length=20, widget=forms.PasswordInput)
+    password2 = forms.CharField(label='Repeat password', max_length=20, widget=forms.PasswordInput)
 
-    class Meta:
+    class Meta(UserCreationForm):
         model = Profile
-        fields = ('username', 'first_name', 'last_name', 'email')
+        fields = ('username', 'first_name', 'last_name', 'email', 'date_of_birth', 'password1')
 
     def clean_password_2(self):
         cd = self.cleaned_data
-        if cd['password'] != cd['password_2']:
+        if cd['password1'] != cd['password2']:
             raise forms.ValidationError('Ошибка! Пароли не совпадают!')
-        return cd['password_2']
+        return cd['password2']

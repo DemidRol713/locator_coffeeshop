@@ -19,7 +19,7 @@ from django.urls import path, include
 from user.views import sign_in, registration
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('sign_in/', sign_in, name='sign in'),
+    path('sign_in/', sign_in, name='sign_in'),
     path('registration/', registration, name='registration'),
     path('user/', include('user.urls')),
     path('coffeeshop/', include('coffeeshop.urls'))

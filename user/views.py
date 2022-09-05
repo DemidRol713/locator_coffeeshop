@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 
 from user.forms import UserRegistrationForm
@@ -12,13 +12,13 @@ def registration(request):
         if user_form.is_valid():
             # если пользователь ввел правильные данные, то сохраняем его в базе данных
             new_user = user_form.save(commit=False)
-            new_user.set_password(user_form.cleaned_data['password'])
+            new_user.set_password(user_form.cleaned_data['password1'])
             new_user.save()
             # если мы находим пользователя в системе, то позволяем ему зайти в систему
-            user = authenticate(username=user_form.cleaned_data['username'], password=user_form.cleaned_data['password'])
+            user = authenticate(username=user_form.cleaned_data['username'], password=user_form.cleaned_data['password1'])
             if user is not None:
                 login(request, user)
-                return render(request, 'user/user_profile.html')
+                return redirect('profile?')
 
     else:
         user_form = UserRegistrationForm()
@@ -29,9 +29,9 @@ def sign_in(request):
     pass
 
 
-def user_profile(request):
+def user_profile(request, id):
     if request.method == "GET":
-        pass
+        return render(request, 'user/user_profile.html')
 
 
 def user_list(request):
