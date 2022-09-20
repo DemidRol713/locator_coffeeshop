@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 import os.path
 from pathlib import Path
 
+from django.template.backends.jinja2 import Jinja2
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -60,12 +62,13 @@ ROOT_URLCONF = 'locator_coffeeshop.urls'
 
 TEMPLATES = [
     {
-       'BACKEND': 'django.template.backends.jinja2.Jinja2',
-       'DIRS': [],
-       'APP_DIRS': True,
-       'OPTIONS': {
-         'environment': 'locator_coffeeshop.jinja2.environment'
-       },
+        'NAME': 'jinja2',
+        'BACKEND': 'django.template.backends.jinja2.Jinja2',
+        'DIRS': [],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'environment': 'locator_coffeeshop.jinja2.environment'
+        },
     },
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -138,8 +141,15 @@ USE_TZ = True
 DATA_FOLDER = '../data/'
 STATIC_URL = 'static/'
 STATICFILES_DIRS = ['static/']
+LOGIN_URL = '/login'
 
-
+MAIN_MENU = [
+    {'name': 'main_page', 'title': "Главная страница"},
+    {'name': 'coffeeshop_list', "title": "Кофейни"},
+]
+SUPERUSER_MENU = [
+    {'name': 'user_list', 'title': 'Список пользователей'}
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
