@@ -1,10 +1,10 @@
 from django.urls import path, include
 
-import coffeeshop.views
+from coffeeshop import views
 
 urlpatterns = [
-    path('profile?<int:id>/', coffeeshop.views.coffeeshop_card, name='coffeeshop'),
-    path('coffeeshop_list/', coffeeshop.views.CoffeeshopListView.as_view(), name='coffeeshop_list'),
-    path('', coffeeshop.views.main_page, name='main_page')
+    path('profile/<pk>', views.CoffeeShopView.as_view(), name='coffeeshop'),
+    path('coffeeshop_list/', views.CoffeeshopListView.as_view(), name='coffeeshop_list'),
+    # path('', views.main_page, name='main_page')
     # path('/coffeeshop/drinks_menu', include('drink.urls'))
 ]

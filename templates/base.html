@@ -113,7 +113,7 @@
                             {% for item in main_menu %}
                                 <li class="sidebar-item">
                                     <a class="sidebar-link" href="{% url item.name %}">
-                                         {{ item.title }}
+                                        <span class="sidebar-user-title">{{ item.title }}</span>
                                     </a>
                                 </li>
                             {% endfor %}
@@ -158,7 +158,7 @@
                     <div class="navbar-collapse collapse" style="justify-content: flex-end">
 
                         <div>
-                            <span class="text-dark"><b>Имя пользователя:{{ user.username }}</b> </span>
+                            <span class="text-dark"><b>Имя пользователя:</b>{{ user.username }} </span>
                         </div>
 
                         <div class="btn-group">
@@ -168,7 +168,7 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-lg-end">
                                 <li>
-                                    <a class="dropdown-item" href="{% url 'user_profile' %}" target="_blank">
+                                    <a class="dropdown-item" href="{% url 'user_profile' %}">
                                         <svg xmlns="http://www.w3.org/2000/svg"
                                             width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                             stroke-linecap="round" stroke-linejoin="round" class="feather feather-book-open align-middle me-1">
@@ -179,7 +179,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="{% url 'logout' %}" target="_blank">
+                                    <a class="dropdown-item" href="{% url 'logout' %}">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit align-middle me-1">
                                             <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>

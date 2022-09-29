@@ -150,6 +150,12 @@ MAIN_MENU = [
 SUPERUSER_MENU = [
     {'name': 'user_list', 'title': 'Список пользователей'}
 ]
+FILTERS_COFFESHOP = [
+    {'name': 'for_work', 'title': 'Можно поработать', 'options': []},
+    {'name': 'for_gatherings', 'title': 'Можно посидеть с друзьями', 'options': []},
+    {'name': 'alternative_grain', 'title': "Альтернативное зерно", 'options': []},
+    {'name': 'alternative_milk', 'title': "Альтернативное молоко", 'options': []}
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

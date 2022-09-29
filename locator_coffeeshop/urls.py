@@ -15,10 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from django.conf.urls import static
 
 from user.views import logout_view, LoginView
 from user.views import UserRegistrationView
+from coffeeshop.views import main_page
 
 
 urlpatterns = [
@@ -27,7 +27,8 @@ urlpatterns = [
     path('logout/', logout_view, name='logout'),
     path('registration/', UserRegistrationView.as_view(), name='registration'),
     path('user/', include('user.urls')),
-    path('', include('coffeeshop.urls'))
+    path('coffeeshop/', include('coffeeshop.urls')),
+    path('', main_page, name='main_page')
 
 ]
 
