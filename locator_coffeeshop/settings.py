@@ -9,8 +9,10 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-
+import os.path
 from pathlib import Path
+
+from django.template.backends.jinja2 import Jinja2
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -40,8 +42,8 @@ INSTALLED_APPS = [
     'user',
     'coffeeshop',
     'drink',
-    'settings_coffee_shop',
-    'favorites',
+    'settings_coffeeshop',
+    'favorite',
     'file',
     'review',
 ]
@@ -59,6 +61,15 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'locator_coffeeshop.urls'
 
 TEMPLATES = [
+    {
+        'NAME': 'jinja2',
+        'BACKEND': 'django.template.backends.jinja2.Jinja2',
+        'DIRS': [],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'environment': 'locator_coffeeshop.jinja2.environment'
+        },
+    },
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [BASE_DIR / 'templates']
@@ -115,7 +126,7 @@ AUTH_USER_MODEL = 'user.Profile'
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru-RU'
 
 TIME_ZONE = 'UTC'
 
@@ -123,13 +134,33 @@ USE_I18N = True
 
 USE_TZ = True
 
+DATE_FORMAT = 'd.m.Y'
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
 DATA_FOLDER = '../data/'
+STATIC_URL = 'static/'
+STATICFILES_DIRS = ['static/']
+LOGIN_URL = '/login'
 
+MAIN_MENU = [
+    # {'name': 'main_page', 'title': "Главная страница"},
+    {'name': 'coffeeshop_list', "title": "Кофейни"},
+    {'name': 'user_profile', 'title': 'Статьи'},
+    {'name': 'user_profile', 'title': 'Мероприятия'},
+    {'name': 'user_profile', 'title': 'Избранное'}
+]
+SUPERUSER_MENU = [
+    {'name': 'user_list', 'title': 'Список пользователей'}
+]
+FILTERS_COFFEESHOP = [
+    {'name': 'for_work', 'title': 'Можно поработать', 'options': []},
+    {'name': 'for_gatherings', 'title': 'Можно посидеть с друзьями', 'options': []},
+    {'name': 'alternative_grain', 'title': "Альтернативное зерно", 'options': []},
+    {'name': 'alternative_milk', 'title': "Альтернативное молоко", 'options': []}
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
