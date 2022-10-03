@@ -7,9 +7,21 @@ class ProfileChangeForm(UserChangeForm):
     """
 
     """
-    class Meta:
+    class Meta(UserChangeForm):
         model = Profile
-        fields = ('username', 'first_name', 'last_name', 'email', 'date_of_birth',)
+        fields = ("username", 'first_name', 'last_name', 'email', 'date_of_birth')
+
+    def clean_email(self):
+        cleaned_data = super().clean()
+        if Profile.manager.filter(email=cleaned_data.get('email')).exists():
+            self.fields.add_error('email', "Эта почта уже зарегистрирована")
+        return cleaned_data.get('email')
+
+    def clean_username(self):
+        cleaned_data = super().clean()
+        if Profile.objects.filter(email=cleaned_data.get('username')).exists():
+            self.fields.add_error('username', "Этот логин уже зарегистрирован")
+        return cleaned_data.get('username')
 
 
 class UserRegistrationForm(UserCreationForm):
@@ -28,6 +40,18 @@ class UserRegistrationForm(UserCreationForm):
         if cd['password1'] != cd['password2']:
             raise forms.ValidationError('Ошибка! Пароли не совпадают!')
         return cd['password2']
+
+    def clean_email(self):
+        cleaned_data = super().clean()
+        if Profile.manager.filter(email=cleaned_data.get('email')).exists():
+            self.fields.add_error('email', "Эта почта уже зарегистрирована")
+        return cleaned_data.get('email')
+
+    def clean_username(self):
+        cleaned_data = super().clean()
+        if Profile.objects.filter(email=cleaned_data.get('username')).exists():
+            self.fields.add_error('username', "Этот логин уже зарегистрирован")
+        return cleaned_data.get('username')
 
 
 class UserLoginForm(forms.Form):

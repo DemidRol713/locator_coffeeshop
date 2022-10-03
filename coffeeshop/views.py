@@ -50,14 +50,14 @@ class CoffeeshopListView(ListView):
         data = super().get_context_data(**kwargs)
         data['main_menu'] = settings.MAIN_MENU
         data['coffeeshop_list'] = self.model.manager.get_coffeeshop_list()
-        data['filters'] = settings.FILTERS_COFFESHOP
+        data['filters'] = settings.FILTERS_COFFEESHOP
 
         return data
 
     def post(self, request, *args, **kwargs):
 
         filter = self.request.POST
-        tags_list = settings.FILTERS_COFFESHOP
+        tags_list = settings.FILTERS_COFFEESHOP
         tags = []
         for tag in tags_list:
             if filter.get(tag['name']) == 'on':
@@ -65,15 +65,17 @@ class CoffeeshopListView(ListView):
 
         coffeeshop_list = CoffeeShop.manager.get_coffeeshop_list()
         coffeeshop_list_filtered = []
-        for coffeeshop in coffeeshop_list:
-            for tag in tags:
-                settings_coffeeshop = SettingsCoffeeShop.manager.get_settings_by_id_coffeeshop(coffeeshop.id)
-                x = settings_coffeeshop.tags
-                if tag['name'] in settings_coffeeshop.tags:
-                    coffeeshop_list_filtered.append(coffeeshop)
-                    break
+        if tags:
+            for coffeeshop in coffeeshop_list:
+                for tag in tags:
+                    settings_coffeeshop = SettingsCoffeeShop.manager.get_settings_by_id_coffeeshop(coffeeshop.id)
+                    if tag['name'] in settings_coffeeshop.tags:
+                        coffeeshop_list_filtered.append(coffeeshop)
+                        break
+        else:
+            coffeeshop_list_filtered = coffeeshop_list
 
-        data = {'main_menu': settings.MAIN_MENU, 'filters': settings.FILTERS_COFFESHOP,
+        data = {'main_menu': settings.MAIN_MENU, 'filters': settings.FILTERS_COFFEESHOP,
                 'coffeeshop_list': coffeeshop_list_filtered}
 
         return render(self.request, "coffeeshop/coffeeshop_list.html", data)

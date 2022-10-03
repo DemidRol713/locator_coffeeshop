@@ -103,21 +103,21 @@
 
         <div class="wrapper">
 
-            <nav id="sidebar" class="sidebar js-sidebar">
-                <div class="sidebar-content js-simplebar">
-                    <a class="sidebar-brand" href="{% url 'main_page' %}">
-                        <img src="{% static 'img/icons/brand-1.svg' %}" width="100%">
-                    </a>
-                    <p class="sidebar-header">Главное меню</p>
-                    <ul class="sidebar-nav">
-                            {% for item in main_menu %}
-                                <li class="sidebar-item">
-                                    <a class="sidebar-link" href="{% url item.name %}">
-                                        <span class="sidebar-user-title">{{ item.title }}</span>
-                                    </a>
-                                </li>
-                            {% endfor %}
-                    </ul>
+{#            <nav id="sidebar" class="sidebar js-sidebar">#}
+{#                <div class="sidebar-content js-simplebar">#}
+{#                    <a class="sidebar-brand" href="{% url 'main_page' %}">#}
+{#                        <img src="{% static 'img/icons/brand-1.svg' %}" width="100%">#}
+{#                    </a>#}
+{#                    <p class="sidebar-header">Главное меню</p>#}
+{#                    <ul class="sidebar-nav">#}
+{#                            {% for item in main_menu %}#}
+{#                                <li class="sidebar-item">#}
+{#                                    <a class="sidebar-link" href="{% url item.name %}">#}
+{#                                        <span class="sidebar-user-title">{{ item.title }}</span>#}
+{#                                    </a>#}
+{#                                </li>#}
+{#                            {% endfor %}#}
+{#                    </ul>#}
 {#                    <div class="sidebar-cta">#}
 {#                        <div class="sidebar-cta-content">#}
 {#                            <div class="mb-0 text-sm text-center">#}
@@ -125,8 +125,8 @@
 {#                            </div>#}
 {#                        </div>#}
 {#                    </div>#}
-                </div>
-            </nav>
+{#                </div>#}
+{#            </nav>#}
 
 {#            <script>#}
 {#                $(document).ready(function () { $("body").click(loadPage()) });#}
@@ -151,15 +151,29 @@
             <div class="main">
                 <nav class="navbar navbar-expand navbar-light navbar-bg">
 
-                    <a class="sidebar-toggle js-sidebar-toggle">
-                        <i class="hamburger align-self-center"></i>
-                    </a>
+{#                    <a class="sidebar-toggle js-sidebar-toggle">#}
+{#                        <i class="hamburger align-self-center"></i>#}
+{#                    </a>#}
 
                     <div class="navbar-collapse collapse" style="justify-content: flex-end">
-
-                        <div>
-                            <span class="text-dark"><b>Имя пользователя:</b>{{ user.username }} </span>
-                        </div>
+                        <a class="navbar-brand" href="{% url 'main_page' %}">
+                            <img src="{% static 'img/icons/brand-1.svg' %}" width="30" height="24" class="d-inline-block align-text-top">
+                            Locator CoffeeShop
+                        </a>
+{#                        <div>#}
+{#                            <span class="text-dark"><b>Имя пользователя:</b>{{ user.username }} </span>#}
+{#                        </div>#}
+                        <ul class="navbar-nav me-auto mb-2 mb-sm-0">
+                            {% for item in main_menu %}
+                            <li class="nav-item">
+                                <a class="nav-link navbar-brand" aria-current="page" href="{% url item.name %}">{{ item.title }}</a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+{#                        <form class="d-flex">#}
+{#                            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">#}
+{#                            <button class="btn btn-outline-success" type="submit">Search</button>#}
+{#                        </form>#}
 
                         <div class="btn-group">
                             <a class="nav-link dropdown-toggle" href="#" id="resourcesDropdown" role="button" data-bs-toggle="dropdown"
@@ -167,6 +181,10 @@
                                 Действия
                             </a>
                             <ul class="dropdown-menu dropdown-menu-lg-end">
+                                <li class=" " style="text-align: center">
+                                    <img src="{{ user_data.image }}" class="img-fluid rounded-circle mb-2" width="100" height="100" />
+                                    <p class=""><strong>{{ user_data.username }}</strong></p>
+                                </li>
                                 <li>
                                     <a class="dropdown-item" href="{% url 'user_profile' %}">
                                         <svg xmlns="http://www.w3.org/2000/svg"

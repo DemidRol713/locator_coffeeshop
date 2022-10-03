@@ -6,14 +6,21 @@ from django.utils.decorators import method_decorator
 from django.views.generic import CreateView, UpdateView, TemplateView
 # from django.contrib.auth
 
-from user.forms import UserRegistrationForm, UserForm
+from user.forms import UserRegistrationForm, UserForm, ProfileChangeForm
 from user.models import Profile
 
 
 class UserRegistrationView(CreateView):
-    template_name = 'user/registration.html'
+    template_name = 'user/create_update_user.html'
     form_class = UserRegistrationForm
     model = Profile
+
+    def get_context_data(self, **kwargs):
+
+        data = super().get_context_data(**kwargs)
+        data['mode'] = 'create'
+
+        return data
 
     def form_valid(self, form):
         new_user = form.save(commit=False)
@@ -24,6 +31,15 @@ class UserRegistrationView(CreateView):
         if user is not None:
             login(self.request, user)
             return redirect('user_profile')
+
+    def form_invalid(self, form):
+        data = {
+            'user_data': form.cleaned_data,
+            'mode': 'create',
+            'error': form.errors
+        }
+
+        return render(self.request, 'user/create_update_user.html', data)
 
 
 @method_decorator(login_required, name='dispatch')
@@ -39,9 +55,7 @@ class UserProfileView(TemplateView):
         user = Profile
         data = super().get_context_data(**kwargs)
         data['user_data'] = user.manager.get_user_by_id(self.request.user.id)
-        data['mode'] = 'view'
         data['main_menu'] = settings.MAIN_MENU
-        x = data['user_data']
 
         return data
 
@@ -62,6 +76,36 @@ class LoginView(views.LoginView):
             return redirect('user_profile')
         else:
             return render(self.request, 'user/login.html')
+
+
+class EditProfileView(UpdateView):
+    template_name = 'user/create_update_user.html'
+    model = Profile
+    form_class = ProfileChangeForm
+
+    def get_context_data(self, **kwargs):
+
+        data = super().get_context_data(**kwargs)
+        data['user_data'] = Profile.manager.get_user_by_id(self.request.user.id)
+        data['mode'] = 'edit'
+
+        return data
+
+    def form_valid(self, form):
+
+        form.save()
+
+        return redirect('user_profile')
+
+    def form_invalid(self, form):
+
+        data = {
+            'user_data': Profile.manager.get_user_by_id(self.request.user.id),
+            'mode': 'edit',
+            'error': form.errors
+        }
+
+        return render(self.request, 'user/create_update_user.html', data)
 
 
 def user_list(request):

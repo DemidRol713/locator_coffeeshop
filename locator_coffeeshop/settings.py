@@ -126,13 +126,15 @@ AUTH_USER_MODEL = 'user.Profile'
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru-RU'
 
 TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
 USE_TZ = True
+
+DATE_FORMAT = 'd.m.Y'
 
 
 # Static files (CSS, JavaScript, Images)
@@ -144,13 +146,16 @@ STATICFILES_DIRS = ['static/']
 LOGIN_URL = '/login'
 
 MAIN_MENU = [
-    {'name': 'main_page', 'title': "Главная страница"},
+    # {'name': 'main_page', 'title': "Главная страница"},
     {'name': 'coffeeshop_list', "title": "Кофейни"},
+    {'name': 'user_profile', 'title': 'Статьи'},
+    {'name': 'user_profile', 'title': 'Мероприятия'},
+    {'name': 'user_profile', 'title': 'Избранное'}
 ]
 SUPERUSER_MENU = [
     {'name': 'user_list', 'title': 'Список пользователей'}
 ]
-FILTERS_COFFESHOP = [
+FILTERS_COFFEESHOP = [
     {'name': 'for_work', 'title': 'Можно поработать', 'options': []},
     {'name': 'for_gatherings', 'title': 'Можно посидеть с друзьями', 'options': []},
     {'name': 'alternative_grain', 'title': "Альтернативное зерно", 'options': []},
