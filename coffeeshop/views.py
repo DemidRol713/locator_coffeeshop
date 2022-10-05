@@ -5,9 +5,20 @@ from django.views.generic import ListView, DetailView, UpdateView
 import folium
 
 from coffeeshop.models import CoffeeShop
+from user.models import Profile
 from settings_coffeeshop.models import SettingsCoffeeShop
 from file.models import File
 from locator_coffeeshop import settings
+
+
+def get_base_data(request):
+
+    data = {
+        'main_menu': settings.MAIN_MENU,
+        'user_data': Profile.manager.get_user_by_id(request.user.id)
+    }
+
+    return data
 
 
 @method_decorator(login_required, name='dispatch')
@@ -18,10 +29,11 @@ class CoffeeShopView(DetailView):
     def get_context_data(self, **kwargs):
 
         data = super(CoffeeShopView, self).get_context_data(**kwargs)
+        data.update(get_base_data(self.request))
         data['coffeeshop'] = CoffeeShop.manager.get_coffeeshop_by_id(self.kwargs['pk'])
+        data['app_name'] = data['coffeeshop'].name
         data['setting'] = SettingsCoffeeShop.manager.get_settings_by_id_coffeeshop(self.kwargs['pk'])
         data['images'] = File.manager.get_files_by_id_setting(data['setting'].id)
-        data['main_menu'] = settings.MAIN_MENU
 
         coordinates = [data['coffeeshop'].latitude, data['coffeeshop'].longitude]
         map = folium.Map(location=coordinates, zoom_start=17)
@@ -48,6 +60,8 @@ class CoffeeshopListView(ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
 
         data = super().get_context_data(**kwargs)
+        data.update(get_base_data(self.request))
+        data['app_name'] = 'Список кофеен'
         data['main_menu'] = settings.MAIN_MENU
         data['coffeeshop_list'] = self.model.manager.get_coffeeshop_list()
         data['filters'] = settings.FILTERS_COFFEESHOP

@@ -12,12 +12,15 @@
                     <div class="card-body text-center">
                         <img src="{{ user_data.image }}" class="img-fluid  mb-2" style="width: auto" />
                         <p><strong>{{ user_data.username }}</strong></p>
-{#                        <div class="text-muted mb-2"></div>#}
 
                         <div>
                             <a class="" href="{% url 'edit_profile' pk=user_data.id %}">
                                 <span data-feather="edit"></span>
                                 Редактировать
+                            </a>
+                            <a class="" href="{% url 'change_password'%}">
+                                <span data-feather="edit"></span>
+                                Замена пароля
                             </a>
                         </div>
                     </div>

@@ -146,7 +146,6 @@ STATICFILES_DIRS = ['static/']
 LOGIN_URL = '/login'
 
 MAIN_MENU = [
-    # {'name': 'main_page', 'title': "Главная страница"},
     {'name': 'coffeeshop_list', "title": "Кофейни"},
     {'name': 'user_profile', 'title': 'Статьи'},
     {'name': 'user_profile', 'title': 'Мероприятия'},
