@@ -15,4 +15,9 @@ class SettingsCoffeeShop(models.Model):
     tags = ArrayField(
         models.CharField(max_length=30)
     )
+
+    images = ArrayField(
+        models.ImageField(),
+        default=list('static/img/photos/')
+    )
     manager = SettingsCoffeeshopManager()

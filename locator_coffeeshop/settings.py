@@ -44,8 +44,8 @@ INSTALLED_APPS = [
     'drink',
     'settings_coffeeshop',
     'favorite',
-    'file',
     'review',
+    'article',
 ]
 
 MIDDLEWARE = [
@@ -147,7 +147,7 @@ LOGIN_URL = '/login'
 
 MAIN_MENU = [
     {'name': 'coffeeshop_list', "title": "Кофейни"},
-    {'name': 'user_profile', 'title': 'Статьи'},
+    {'name': 'article_list', 'title': 'Статьи'},
     {'name': 'user_profile', 'title': 'Мероприятия'},
     {'name': 'user_profile', 'title': 'Избранное'}
 ]
@@ -155,10 +155,10 @@ SUPERUSER_MENU = [
     {'name': 'user_list', 'title': 'Список пользователей'}
 ]
 FILTERS_COFFEESHOP = [
-    {'name': 'for_work', 'title': 'Можно поработать', 'options': []},
-    {'name': 'for_gatherings', 'title': 'Можно посидеть с друзьями', 'options': []},
-    {'name': 'alternative_grain', 'title': "Альтернативное зерно", 'options': []},
-    {'name': 'alternative_milk', 'title': "Альтернативное молоко", 'options': []}
+    {'name': 'for_work', 'title': 'Можно поработать', 'is_active': False},
+    {'name': 'for_gatherings', 'title': 'Можно посидеть с друзьями', 'is_active': False},
+    {'name': 'alternative_grain', 'title': "Альтернативное зерно", 'is_active': False},
+    {'name': 'alternative_milk', 'title': "Альтернативное молоко", 'is_active': False}
 ]
 
 # Default primary key field type

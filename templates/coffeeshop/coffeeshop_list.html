@@ -1,33 +1,38 @@
 {% extends 'base.html' %}
 {% block main_block %}
     {% load static %}
-    {#    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">#}
-    {#    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap4.min.css">#}
-    {#    <script src="{% static "js/datatables.js" %}"></script>#}
-    {#    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>#}
-    {#    <script type="text/javascript" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>#}
-    {#    <script type="text/javascript" src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap4.min.js"></script>#}
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap4.min.css">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap4.min.js"></script>
+{#    <script type="text/javascript">{{  }}</script>#}
 
-    {#    <script>#}
-    {#        document.addEventListener("DOMContentLoaded", function () {#}
-    {#            // DataTables with Buttons#}
-    {#            var datatablesButtons = $("#datatable").DataTable({#}
-    {#                lengthChange: !1,#}
-    {#displayStart: {{ _num_page*10 }},#}
-    {#                responsive: true,#}
-    {#                pageLength: 20#}
-    {#            });#}
-    {##}
-    {#            datatablesButtons.buttons().container().appendTo("#datatables-buttons_wrapper .col-md-6:eq(0)");#}
-    {##}
-    {#        });#}
-    {#    </script>#}
+{#    <script>#}
+{#        document.addEventListener("DOMContentLoaded", function () {#}
+{#        });#}
+{#    </script>#}
+{#    <style>#}
+{#    .list-group-item {#}
+{#        max-width: 22%;#}
+{#    }#}
+{#    </style>#}
 
     <div class="container-fluid p-0">
-        <h1 class="h3 mb-3">Кофейни</h1>
+        <div class="row">
+            <div class="col-sm-3">
+                <h1 class="h3 mb-3">Кофейни</h1>
+            </div>
+            <div class="card-title">
+                <div class="col-sm-2 list-group list-group-horizontal text-center" id="list-tab" role="tablist">
+                    <a class="list-group-item list-group-item-action text-center active" id="list-list" data-bs-toggle="list" href="#list" role="tab" aria-controls="list-home">Список</a>
+                    <a class="list-group-item list-group-item-action text-center" id="list-map" data-bs-toggle="list" href="#map" role="tab" aria-controls="list-profile">Карта</a>
+                </div>
+            </div>
+        </div>
 
         <div class="row">
-            <div class="col-md-4 col-xl-3">
+            <div class="col-sm-4 col-xl-3">
                 <div class="card">
                     <div class="card-header">
                         <span class="card-title">Фильтры</span>
@@ -39,7 +44,8 @@
                                     <li class="input-group">
                                         <div class="input-group-text">
                                             <input id="{{ filter.name }}" name="{{ filter.name }}"
-                                                   class="form-check-input" type="checkbox">
+                                                   class="form-check-input" type="checkbox"
+                                            {% if filter.is_active %}checked{% endif %}>
                                         </div>
 
                                         <label class="form-control" for="{{ filter.name }}">{{ filter.title }}</label>
@@ -55,25 +61,30 @@
 
             <div class="col-md-8">
                 <div class="">
-                    <div class="">
-                        <ul>
-                            {% for coffeeshop in coffeeshop_list %}
-                                <li class="rounded card">
-                                    <a href="{% url "coffeeshop" pk=coffeeshop.pk %}"
-                                       class="" style="margin-bottom: 1%">
-                                        <div class="row">
-                                            <div class="col-sm-4" style="overflow: hidden">
-                                                <img class="card-img" src="{% static "img/photos/unsplash-1.jpg" %}">
+                    <div class="tab-content" id="nav-tabContent">
+                        <div class="tab-pane fade show active" id="list" role="tabpanel" aria-labelledby="list-home-list">
+                            <ul class=" list-group">
+                                {% for coffeeshop in coffeeshop_list %}
+                                    <li class="rounded card border" style="border-radius: 8px">
+                                        <a href="{% url "coffeeshop" pk=coffeeshop.pk %}"
+                                           class="" style="margin: 1%">
+                                            <div class="row">
+                                                <div class="col-sm-4" style="overflow: hidden">
+                                                    <img class="card-img" src="{% static "img/photos/unsplash-1.jpg" %}">
+                                                </div>
+                                                <div class="col-sm">
+                                                    <h3>{{ coffeeshop.name }}</h3>
+                                                    <p>Адрес: {{ coffeeshop.address }}</p>
+                                                </div>
                                             </div>
-                                            <div class="col-sm">
-                                                <h3>{{ coffeeshop.name }}</h3>
-                                                <p>Адрес: {{ coffeeshop.address }}</p>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                            {% endfor %}
-                        </ul>
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="tab-pane fade" id="map" role="tabpanel" aria-labelledby="list-profile-list">
+                            {{ map | safe }}
+                        </div>
                     </div>
                 </div>
             </div>

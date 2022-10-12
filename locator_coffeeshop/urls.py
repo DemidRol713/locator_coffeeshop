@@ -28,7 +28,8 @@ urlpatterns = [
     path('registration/', UserRegistrationView.as_view(), name='registration'),
     path('user/', include('user.urls')),
     path('coffeeshop/', include('coffeeshop.urls')),
-    path('', main_page, name='main_page')
+    path('', main_page, name='main_page'),
+    path('article/', include('article.urls')),
 
 ]
 
