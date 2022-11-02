@@ -2,9 +2,11 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, DetailView, UpdateView
+from django.core.paginator import Paginator
 import folium
 
 from coffeeshop.models import CoffeeShop
+from settings_coffeeshop.forms import SettingCoffeeshopForm
 from user.models import Profile
 from settings_coffeeshop.models import SettingsCoffeeShop
 from locator_coffeeshop import settings
@@ -32,6 +34,15 @@ class CoffeeShopView(DetailView):
         data['coffeeshop'] = CoffeeShop.manager.get_coffeeshop_by_id(self.kwargs['pk'])
         data['app_name'] = data['coffeeshop'].name
         data['setting'] = SettingsCoffeeShop.manager.get_settings_by_id_coffeeshop(self.kwargs['pk'])
+        if data['setting'] is None:
+            setting = SettingCoffeeshopForm({
+                'id_coffeeshop': data['coffeeshop'].id,
+                'type_content': 'main',
+                'tags': [],
+                'images': ''
+            })
+            setting.save()
+            data['setting'] = SettingsCoffeeShop.manager.get_settings_by_id_coffeeshop(self.kwargs['pk'])
 
         coordinates = [data['coffeeshop'].latitude, data['coffeeshop'].longitude]
         map = folium.Map(location=coordinates, zoom_start=17)
@@ -54,6 +65,8 @@ class CoffeeshopListView(ListView):
     template_name = "coffeeshop/coffeeshop_list.html"
     model = CoffeeShop
     queryset = CoffeeShop.manager.get_coffeeshop_list()
+    # paginator_class = Paginator(queryset, 10)
+    paginate_by = 10
 
     def get_context_data(self, *, object_list=None, **kwargs):
 
@@ -61,8 +74,12 @@ class CoffeeshopListView(ListView):
         data.update(get_base_data(self.request))
         data['app_name'] = 'Список кофеен'
         data['main_menu'] = settings.MAIN_MENU
-        data['coffeeshop_list'] = self.model.manager.get_coffeeshop_list()
+        coffeeshop_list = self.model.manager.get_coffeeshop_list()
         data['filters'] = settings.FILTERS_COFFEESHOP
+        paginator = Paginator(coffeeshop_list, 10)
+        page_number = self.request.GET.get('page')
+        # page_obj = paginator.get_page(page_number)
+        data['page_obj'] = paginator.get_page(page_number)
 
         map = folium.Map(location=[59.938732, 30.316229])
         for coffeeshop in data['coffeeshop_list']:
