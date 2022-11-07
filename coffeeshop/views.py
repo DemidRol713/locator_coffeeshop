@@ -32,14 +32,13 @@ class CoffeeShopView(DetailView):
         data = super(CoffeeShopView, self).get_context_data(**kwargs)
         data.update(get_base_data(self.request))
         data['coffeeshop'] = CoffeeShop.manager.get_coffeeshop_by_id(self.kwargs['pk'])
+        data['coffeeshop'].opening_hours = data['coffeeshop'].opening_hours.split(';')
         data['app_name'] = data['coffeeshop'].name
         data['setting'] = SettingsCoffeeShop.manager.get_settings_by_id_coffeeshop(self.kwargs['pk'])
-        if data['setting'] is None:
+        if len(data['setting'] ) == 0:
             setting = SettingCoffeeshopForm({
                 'id_coffeeshop': data['coffeeshop'].id,
                 'type_content': 'main',
-                'tags': [],
-                'images': ''
             })
             setting.save()
             data['setting'] = SettingsCoffeeShop.manager.get_settings_by_id_coffeeshop(self.kwargs['pk'])
@@ -82,7 +81,7 @@ class CoffeeshopListView(ListView):
         data['page_obj'] = paginator.get_page(page_number)
 
         map = folium.Map(location=[59.938732, 30.316229])
-        for coffeeshop in data['coffeeshop_list']:
+        for coffeeshop in coffeeshop_list:
             coordinates = [coffeeshop.latitude, coffeeshop.longitude]
 
             folium.Marker(
@@ -118,7 +117,7 @@ class CoffeeshopListView(ListView):
         else:
             coffeeshop_list_filtered = coffeeshop_list
 
-        map = folium.Map(location=[59.938732, 30.316229])
+        map = folium.Map(location=[59.696, 30.681])
         for coffeeshop in coffeeshop_list_filtered:
             coordinates = [coffeeshop.latitude, coffeeshop.longitude]
 
@@ -141,5 +140,5 @@ class CoffeeshopListView(ListView):
 @login_required
 def main_page(request):
 
-    data = get_base_data(request)
-    return render(request, 'coffeeshop/main_page.html', data)
+    # data = get_base_data(request)
+    return redirect('coffeeshop_list')

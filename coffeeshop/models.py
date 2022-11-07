@@ -9,7 +9,7 @@ def get_website_default():
     Возвращает значение website по умолчанию
     :return:
     """
-    return list('https://vk.com/feed')
+    return ['https://vk.com/feed']
 
 
 def get_email_default():
@@ -17,7 +17,7 @@ def get_email_default():
     Возвращает значение email по умолчанию
     :return:
     """
-    return list('test@test.test')
+    return ['test@test.test']
 
 
 def get_social_networks_default():
@@ -25,7 +25,7 @@ def get_social_networks_default():
     Возвращает значение social_networks по умолчанию
     :return:
     """
-    return list('https://vk.com')
+    return ['https://vk.com']
 
 
 # Create your models here.

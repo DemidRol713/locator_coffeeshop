@@ -18,7 +18,7 @@ def get_images_default():
     :return:
     """
 
-    return list('static/img/photos/')
+    return ['static/img/photos/']
 # Create your models here.
 class SettingsCoffeeShop(models.Model):
     """
@@ -28,11 +28,13 @@ class SettingsCoffeeShop(models.Model):
     type_content = models.CharField(max_length=40)
     tags = ArrayField(
         models.CharField(max_length=30),
-        default=get_tags_default
+        default=get_tags_default,
+        blank=False
     )
 
     images = ArrayField(
         models.ImageField(),
-        default=get_images_default
+        default=get_images_default,
+        blank=False
     )
     manager = SettingsCoffeeshopManager()

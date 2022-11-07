@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_filters',
+    'drf_yasg',
     'user',
     'coffeeshop',
     'drink',
@@ -46,6 +48,7 @@ INSTALLED_APPS = [
     'favorite',
     'review',
     'article',
+    'jinja2',
 ]
 
 MIDDLEWARE = [
@@ -62,7 +65,6 @@ ROOT_URLCONF = 'locator_coffeeshop.urls'
 
 TEMPLATES = [
     {
-        'NAME': 'jinja2',
         'BACKEND': 'django.template.backends.jinja2.Jinja2',
         'DIRS': [],
         'APP_DIRS': True,

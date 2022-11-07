@@ -4,7 +4,6 @@ from .models import SettingsCoffeeShop
 
 
 class SettingCoffeeshopForm(forms.ModelForm):
-
     class Meta:
         model = SettingsCoffeeShop
-        fields = '__all__'
+        fields = ('id_coffeeshop', 'type_content')
