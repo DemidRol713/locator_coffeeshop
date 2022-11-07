@@ -39,9 +39,9 @@
 {#                                    {% endfor %}#}
 {#                                </div>#}
                                 <div class="carousel-inner">
-                                    {% for image in images %}
+                                    {% for image in setting.images %}
                                         <div class="carousel-item {% if forloop.first %} active {% endif %}">
-                                            <img class="d-block w-100" src="/{{ image.path }}/{{ image.name }}">
+                                            <img class="d-block w-100" src="/{{ image }}">
                                         </div>
                                     {% endfor %}
                                 </div>
@@ -62,13 +62,25 @@
                         </div>
                         <div class="card-body">
                             <p class="card-text"><strong>Адрес:</strong> {{ coffeeshop.address }}</p>
-                            <p class="card-text"><strong>Часы работы:</strong> {{ coffeeshop.opening_hours }}</p>
-                            <p class="card-text"><strong>Сайт:</strong> {{ coffeeshop.website }}</p>
-                            <p class="card-text"><strong>Социальные сети:</strong>
-                                {% for social_network in coffeeshop.social_networks %}
-                                    {{ social_network }}<br>
-                                {% endfor %}
-                            </p>
+{#                            {% set opening_hours = coffeeshop.opening_hours.split(';') %}#}
+                        {% if coffeeshop.opening_hours != '' %}
+                            <p class="card-text"><strong>Часы работы:</strong> <br>{% for opening_hour in coffeeshop.opening_hours %} {{ opening_hour }}<br>{% endfor %}</p>
+                        {% endif %}
+                        {% if coffeeshop.website %}
+                            <p class="card-text"><strong>Сайт:</strong></p>
+                            {% for website in coffeeshop.website %}
+                                <a href="{{ website }}">{{ website }}</a>
+                                <br>
+                            {% endfor %}
+                        {% endif %}
+                        {% if coffeeshop.social_networks %}
+                            <p class="card-text"><strong>Социальные сети:</strong></p>
+                            {% for social_network in coffeeshop.social_networks %}
+                                <a href="{{ social_network }}">{{ social_network }}</a>
+                                <br>
+                            {% endfor %}
+
+                        {% endif %}
                         </div>
                     </div>
                 </div>

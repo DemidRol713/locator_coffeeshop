@@ -11,7 +11,13 @@
     <link href="{% static "css/light.css" %}" rel="stylesheet">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 
-	<title>Sign Up</title>
+	<title>{% if mode == 'create' %}
+        Создание профиля
+	{% elif mode == 'edit' %}
+        Редактирование профиля
+    {% elif mode == 'change_password' %}
+        Замена пароля
+    {% endif %}</title>
 
 	<script src="{% static "js/app.js" %}"></script>
 {#	<script src="{% static "js/settings.js" %}"></script>#}
@@ -39,6 +45,9 @@
                             <p class="lead">
                                 {% for err in error.values %}
                                    {{ err }}
+                                {% endfor %}
+                                {% for name, err in error.items %}
+                                  {{ name }}: {{ err }}
                                 {% endfor %}
                             </p>
 						</div>
@@ -68,21 +77,21 @@
 											<label class="form-label">День Рождение</label>
 											<input class="form-control form-control-lg" type="date" name="date_of_birth" value="{% if mode == 'edit' %}{{ user_data.date_of_birth }}{% endif %}" />
 										</div>
-                                        {% endif %}
-                                        {% if mode == "resst_password" %}
+                                    {% endif %}
+                                        {% if mode == "change_password" %}
                                             <div class="mb-3">
                                                 <label class="form-label">Текущий пароль</label>
-                                                <input required class="form-control form-control-lg" type="password" name="current_password" placeholder="Введите текущий пароль" />
+                                                <input required class="form-control form-control-lg" type="password" name="old_password" placeholder="Введите текущий пароль" />
                                             </div>
                                         {% endif %}
-                                        {% if mode == 'create' or mode == 'reset_password' %}
+                                        {% if mode == 'create' or mode == 'change_password' %}
                                             <div class="mb-3">
                                                 <label class="form-label">Пароль</label>
-                                                <input required class="form-control form-control-lg" type="password" name="password1" placeholder="Введите пароль" />
+                                                <input required class="form-control form-control-lg" type="password" name="{% if mode == 'create'  %}password1{% else %}new_password1{% endif %}" placeholder="Введите пароль" />
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label">Повтор пароля</label>
-                                                <input required class="form-control form-control-lg" type="password" name="password2" placeholder="Введите повторно пароль" />
+                                                <input required class="form-control form-control-lg" type="password" name="{% if mode == 'create'  %}password2{% else %}new_password2{% endif %}" placeholder="Введите повторно пароль" />
                                             </div>
                                         {% endif %}
 										<div class="text-center mt-3">
