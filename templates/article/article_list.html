@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block main_block %}
+    {% load static %}
+{#    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/base.min.css"/>#}
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            new Choices($('.article_find')[0]);
+        });
+    </script>
+    <style>
+    .list-group-item {
+        max-width: 22%;
+    }
+    </style>
+
+    <div class="container-fluid p-0">
+        <div class="row">
+            <div class="col-sm-3">
+                <h1 class="h3 mb-3">Статьи</h1>
+
+            </div>
+        </div>
+        <div class="mb-2">
+            <a class="btn btn-primary" href="{% url 'create_article' %}">Создать статью</a>
+            <select id="article_find" name="action" class="article_find"  onchange="this.form.submit();">
+            <option selected disabled>Поиск</option>
+                {% for article in article_list %}
+                    <option>{{ article.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="">
+                    <div class="tab-content" id="nav-tabContent">
+                        <div class="tab-pane fade show active" id="list" role="tabpanel" aria-labelledby="list-home-list">
+                            <ul class=" list-group">
+{#                                {% for coffeeshop in coffeeshop_list %}#}
+{#                                    <li class="rounded card border" style="border-radius: 8px">#}
+{#                                        <a href="{% url "coffeeshop" pk=coffeeshop.pk %}"#}
+{#                                           class="" style="margin: 1%">#}
+{#                                            <div class="row">#}
+{#                                                <div class="col-sm-4" style="overflow: hidden">#}
+{#                                                    <img class="card-img" src="{% static "img/photos/unsplash-1.jpg" %}">#}
+{#                                                </div>#}
+{#                                                <div class="col-sm">#}
+{#                                                    <h3>{{ coffeeshop.name }}</h3>#}
+{#                                                    <p>Адрес: {{ coffeeshop.address }}</p>#}
+{#                                                </div>#}
+{#                                            </div>#}
+{#                                        </a>#}
+{#                                    </li>#}
+{#                                {% endfor %}#}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -39,13 +39,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_filters',
+    'drf_yasg',
     'user',
     'coffeeshop',
     'drink',
     'settings_coffeeshop',
     'favorite',
-    'file',
     'review',
+    'article',
+    'jinja2',
 ]
 
 MIDDLEWARE = [
@@ -62,7 +65,6 @@ ROOT_URLCONF = 'locator_coffeeshop.urls'
 
 TEMPLATES = [
     {
-        'NAME': 'jinja2',
         'BACKEND': 'django.template.backends.jinja2.Jinja2',
         'DIRS': [],
         'APP_DIRS': True,
@@ -146,9 +148,8 @@ STATICFILES_DIRS = ['static/']
 LOGIN_URL = '/login'
 
 MAIN_MENU = [
-    # {'name': 'main_page', 'title': "Главная страница"},
     {'name': 'coffeeshop_list', "title": "Кофейни"},
-    {'name': 'user_profile', 'title': 'Статьи'},
+    {'name': 'article_list', 'title': 'Статьи'},
     {'name': 'user_profile', 'title': 'Мероприятия'},
     {'name': 'user_profile', 'title': 'Избранное'}
 ]
@@ -156,10 +157,10 @@ SUPERUSER_MENU = [
     {'name': 'user_list', 'title': 'Список пользователей'}
 ]
 FILTERS_COFFEESHOP = [
-    {'name': 'for_work', 'title': 'Можно поработать', 'options': []},
-    {'name': 'for_gatherings', 'title': 'Можно посидеть с друзьями', 'options': []},
-    {'name': 'alternative_grain', 'title': "Альтернативное зерно", 'options': []},
-    {'name': 'alternative_milk', 'title': "Альтернативное молоко", 'options': []}
+    {'name': 'for_work', 'title': 'Можно поработать', 'is_active': False},
+    {'name': 'for_gatherings', 'title': 'Можно посидеть с друзьями', 'is_active': False},
+    {'name': 'alternative_grain', 'title': "Альтернативное зерно", 'is_active': False},
+    {'name': 'alternative_milk', 'title': "Альтернативное молоко", 'is_active': False}
 ]
 
 # Default primary key field type
