@@ -39,17 +39,27 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'djoser',
+    'rest_framework',
+    'rest_framework_simplejwt',
     'django_filters',
     'drf_yasg',
     'user',
     'coffeeshop',
     'drink',
-    'settings_coffeeshop',
     'favorite',
     'review',
     'article',
     'jinja2',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ]
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -146,6 +156,11 @@ DATA_FOLDER = '../data/'
 STATIC_URL = 'static/'
 STATICFILES_DIRS = ['static/']
 LOGIN_URL = '/login'
+
+DJOSER = {
+    'ACTIVATION_URL': '#/activate/{uid}/{token}',
+    'SEND_ACTIVATION_EMAIL': False,
+}
 
 MAIN_MENU = [
     {'name': 'coffeeshop_list', "title": "Кофейни"},

@@ -27,6 +27,21 @@ def get_social_networks_default():
     """
     return ['https://vk.com']
 
+def get_tags_default():
+    """
+    Возвращает значение tags по умолчанию
+    :return:
+    """
+    return list()
+
+def get_images_default():
+    """
+    Возвращает значение images по умолчанию
+    :return:
+    """
+
+    return ['static/img/photos/no_photo.png']
+
 
 # Create your models here.
 class CoffeeShop(models.Model):
@@ -48,6 +63,17 @@ class CoffeeShop(models.Model):
     social_networks = ArrayField(
         models.URLField(),
         default=get_social_networks_default
+    )
+    tags = ArrayField(
+        models.CharField(max_length=30),
+        default=get_tags_default,
+        blank=False
+    )
+
+    images = ArrayField(
+        models.ImageField(),
+        default=get_images_default,
+        blank=False
     )
 
     manager = CoffeeShopManager()

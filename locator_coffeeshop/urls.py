@@ -44,6 +44,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', LoginView.as_view(), name='login'),
     path('logout/', logout_view, name='logout'),
+    path('auth/', include('djoser.urls')),
+    path('auth/', include('djoser.urls.jwt')),
     path('registration/', UserRegistrationView.as_view(), name='registration'),
     path('user/', include('user.urls')),
     path('coffeeshop/', include('coffeeshop.urls')),

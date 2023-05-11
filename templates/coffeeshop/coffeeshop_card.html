@@ -39,7 +39,7 @@
 {#                                    {% endfor %}#}
 {#                                </div>#}
                                 <div class="carousel-inner">
-                                    {% for image in setting.images %}
+                                    {% for image in coffeeshop.images %}
                                         <div class="carousel-item {% if forloop.first %} active {% endif %}">
                                             <img class="d-block w-100" src="/{{ image }}">
                                         </div>
@@ -62,7 +62,6 @@
                         </div>
                         <div class="card-body">
                             <p class="card-text"><strong>Адрес:</strong> {{ coffeeshop.address }}</p>
-{#                            {% set opening_hours = coffeeshop.opening_hours.split(';') %}#}
                         {% if coffeeshop.opening_hours != '' %}
                             <p class="card-text"><strong>Часы работы:</strong> <br>{% for opening_hour in coffeeshop.opening_hours %} {{ opening_hour }}<br>{% endfor %}</p>
                         {% endif %}

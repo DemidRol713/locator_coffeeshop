@@ -1,13 +1,21 @@
+from urllib import request
+
+from cffi.backend_ctypes import unicode
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout, views
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import CreateView, UpdateView, TemplateView
-# from django.contrib.auth
+from requests import Session
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.generics import RetrieveAPIView, ListAPIView, CreateAPIView, GenericAPIView
+from rest_framework.renderers import TemplateHTMLRenderer
+from rest_framework.response import Response
 
 from user.forms import UserRegistrationForm, UserForm, ProfileChangeForm, ChangePasswordForm
 from user.models import Profile
+from user.serializers import UserRegistrationSerializers, UserLoginSerializers
 
 
 def get_base_data(request):
@@ -20,40 +28,41 @@ def get_base_data(request):
     return data
 
 
-class UserRegistrationView(CreateView):
+class UserRegistrationView(CreateAPIView):
+    renderer_classes = [TemplateHTMLRenderer]
     template_name = 'user/create_update_user.html'
-    form_class = UserRegistrationForm
+    serializer_class = UserRegistrationSerializers
     model = Profile
 
-    def get_context_data(self, **kwargs):
+    def get(self, request, *args, **kwargs):
 
-        data = super().get_context_data(**kwargs)
-        data['mode'] = 'create'
+        data = {'mode': 'create'}
 
-        return data
+        return Response(data)
 
-    def form_valid(self, form):
-        new_user = form.save(commit=False)
-        new_user.set_password(form.cleaned_data['password1'])
-        new_user.save()
-        # если мы находим пользователя в системе, то позволяем ему зайти в систему
-        user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password1'])
-        if user is not None:
-            login(self.request, user)
-            return redirect('user_profile')
-
-    def form_invalid(self, form):
-        data = {
-            'user_data': form.cleaned_data,
-            'mode': 'create',
-            'error': form.errors
-        }
-
-        return render(self.request, 'user/create_update_user.html', data)
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            try:
+                serializer.save(commit=False)
+            except Exception as error:
+                return Response({'error': error.args[0], 'mode': 'create'})
+            # если мы находим пользователя в системе, то позволяем ему зайти в систему
+            user = authenticate(username=serializer.validated_data['username'], password=serializer.validated_data['password'])
+            if user is not None:
+                login(self.request, user)
+                return redirect('user_profile')
+        else:
+            # Присваиваем data ошибку
+            data = serializer.errors
+            data['mode'] = 'create'
+            # Возвращаем ошибку
+            return Response(data)
 
 
 @method_decorator(login_required, name='dispatch')
 class UserProfileView(TemplateView):
+    authentication_classes = (TokenAuthentication,)
     template_name = 'user/user_profile.html'
     model = Profile
     form_class = UserForm
@@ -70,21 +79,33 @@ class UserProfileView(TemplateView):
 
 
 def logout_view(request):
-    logout(request)
+
     return redirect('login')
 
 
-class LoginView(views.LoginView):
+class LoginView(GenericAPIView):
+    renderer_classes = [TemplateHTMLRenderer]
     template_name = 'user/login.html'
+    serializer_class = UserLoginSerializers
 
-    def form_valid(self, form):
-        user_data = form.cleaned_data
-        user = authenticate(username=user_data['username'], password=user_data['password'])
-        if user.is_active:
-            login(self.request, user)
-            return redirect('user_profile')
-        else:
-            return render(self.request, 'user/login.html')
+    def get(self, request, *args, **kwargs):
+
+        data = {'mode': 'create'}
+
+        return Response(data)
+
+    def post(self, request, *args, **kwargs):
+        session = Session()
+
+        user_data = {'username': self.request.data['username'], 'password': self.request.data['password']}
+
+        data = session.post( 'jwt-create', user_data)
+        if data.status_code == 200:
+            return Response(data)
+        # if user.is_active:
+        #     return redirect('user_profile')
+        # else:
+        #     return render(self.request, 'user/login.html')
 
 
 @method_decorator(login_required, name='dispatch')
